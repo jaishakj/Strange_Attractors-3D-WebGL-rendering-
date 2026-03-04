@@ -23,421 +23,195 @@
     --input-bg: #14141f;
   }
 
-  html, body {
-    width: 100%; height: 100%;
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'DM Sans', sans-serif;
-    overflow: hidden;
-  }
+  html, body { width:100%; height:100%; background:var(--bg); color:var(--text); font-family:'DM Sans',sans-serif; overflow:hidden; }
+  #app { display:flex; width:100%; height:100vh; }
 
-  #app {
-    display: flex;
-    width: 100%;
-    height: 100vh;
-  }
-
-  /* ── SIDEBAR ── */
+  /* SIDEBAR */
   #sidebar {
-    width: 300px;
-    min-width: 300px;
-    background: var(--panel);
-    border-right: 1px solid var(--panel-border);
-    display: flex;
-    flex-direction: column;
-    padding: 20px;
-    gap: 18px;
-    overflow-y: auto;
-    transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
-    position: relative;
-    z-index: 10;
+    width:300px; min-width:300px;
+    background:var(--panel);
+    border-right:1px solid var(--panel-border);
+    display:flex; flex-direction:column;
+    padding:20px; gap:16px;
+    overflow-y:auto;
+    transition:transform 0.3s cubic-bezier(0.4,0,0.2,1);
+    position:relative; z-index:10;
   }
-
-  #sidebar.collapsed {
-    transform: translateX(-270px);
-  }
+  #sidebar.collapsed { transform:translateX(-270px); }
 
   #collapse-btn {
-    position: absolute;
-    right: -14px;
-    top: 20px;
-    width: 28px;
-    height: 28px;
-    background: var(--panel);
-    border: 1px solid var(--panel-border);
-    border-radius: 50%;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--text-muted);
-    font-size: 10px;
-    transition: all 0.2s;
-    z-index: 20;
+    position:absolute; right:-14px; top:20px;
+    width:28px; height:28px;
+    background:var(--panel); border:1px solid var(--panel-border);
+    border-radius:50%; cursor:pointer;
+    display:flex; align-items:center; justify-content:center;
+    color:var(--text-muted); font-size:10px; transition:all 0.2s; z-index:20;
   }
-  #collapse-btn:hover { color: var(--text); border-color: var(--accent); }
+  #collapse-btn:hover { color:var(--text); border-color:var(--accent); }
 
-  /* ── TOGGLE ── */
-  .toggle-row {
-    display: flex;
-    align-items: center;
-    gap: 10px;
+  /* CATEGORY TABS */
+  .cat-tabs {
+    display:flex; gap:4px;
   }
+  .cat-tab {
+    flex:1; padding:6px 4px;
+    background:var(--input-bg);
+    border:1px solid var(--panel-border);
+    border-radius:5px;
+    color:var(--text-muted);
+    font-family:'DM Sans',sans-serif;
+    font-size:10px; font-weight:500;
+    text-transform:uppercase; letter-spacing:0.4px;
+    cursor:pointer; transition:all 0.2s; text-align:center;
+  }
+  .cat-tab.active { background:rgba(224,82,82,0.15); border-color:var(--accent); color:var(--accent); }
+  .cat-tab:hover:not(.active) { border-color:var(--text-muted); color:var(--text); }
 
-  .toggle {
-    position: relative;
-    width: 40px;
-    height: 22px;
-    flex-shrink: 0;
+  /* BADGE on attractor type */
+  .badge {
+    display:inline-block; font-size:9px;
+    padding:2px 6px; border-radius:10px;
+    font-family:'Space Mono',monospace;
+    letter-spacing:0.3px; margin-left:6px;
   }
-  .toggle input { opacity: 0; width: 0; height: 0; }
-  .toggle-slider {
-    position: absolute;
-    inset: 0;
-    background: var(--toggle-off);
-    border-radius: 11px;
-    cursor: pointer;
-    transition: 0.25s;
-  }
-  .toggle-slider::before {
-    content: '';
-    position: absolute;
-    width: 16px; height: 16px;
-    left: 3px; top: 3px;
-    background: var(--text-muted);
-    border-radius: 50%;
-    transition: 0.25s;
-  }
-  .toggle input:checked + .toggle-slider { background: var(--toggle-on); }
-  .toggle input:checked + .toggle-slider::before {
-    transform: translateX(18px);
-    background: #fff;
-  }
+  .badge-chaos { background:rgba(224,82,82,0.2); color:#e05252; }
+  .badge-bio   { background:rgba(82,180,224,0.2); color:#52b4e0; }
 
-  .toggle-label {
-    font-size: 12px;
-    font-weight: 500;
-    color: var(--text-muted);
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
-  }
+  /* TOGGLE */
+  .toggle-row { display:flex; align-items:center; gap:10px; }
+  .toggle { position:relative; width:40px; height:22px; flex-shrink:0; }
+  .toggle input { opacity:0; width:0; height:0; }
+  .toggle-slider { position:absolute; inset:0; background:var(--toggle-off); border-radius:11px; cursor:pointer; transition:0.25s; }
+  .toggle-slider::before { content:''; position:absolute; width:16px; height:16px; left:3px; top:3px; background:var(--text-muted); border-radius:50%; transition:0.25s; }
+  .toggle input:checked + .toggle-slider { background:var(--toggle-on); }
+  .toggle input:checked + .toggle-slider::before { transform:translateX(18px); background:#fff; }
+  .toggle-label { font-size:12px; font-weight:500; color:var(--text-muted); letter-spacing:0.5px; text-transform:uppercase; }
 
-  /* ── SELECT ── */
-  .field-label {
-    font-size: 10px;
-    font-weight: 500;
-    color: var(--text-muted);
-    text-transform: uppercase;
-    letter-spacing: 0.8px;
-    margin-bottom: 6px;
-  }
-
-  .custom-select {
-    position: relative;
-  }
-
+  /* SELECT */
+  .field-label { font-size:10px; font-weight:500; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.8px; margin-bottom:6px; }
+  .custom-select { position:relative; }
   .custom-select select {
-    width: 100%;
-    padding: 9px 32px 9px 12px;
-    background: var(--input-bg);
-    border: 1px solid var(--panel-border);
-    border-radius: 6px;
-    color: var(--text);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 13px;
-    appearance: none;
-    cursor: pointer;
-    transition: border-color 0.2s;
-    outline: none;
+    width:100%; padding:9px 32px 9px 12px;
+    background:var(--input-bg); border:1px solid var(--panel-border);
+    border-radius:6px; color:var(--text);
+    font-family:'DM Sans',sans-serif; font-size:13px;
+    appearance:none; cursor:pointer; transition:border-color 0.2s; outline:none;
   }
-  .custom-select select:hover,
-  .custom-select select:focus { border-color: var(--accent); }
+  .custom-select select:hover,.custom-select select:focus { border-color:var(--accent); }
+  .custom-select::after { content:'▾'; position:absolute; right:12px; top:50%; transform:translateY(-50%); color:var(--text-muted); pointer-events:none; font-size:11px; }
 
-  .custom-select::after {
-    content: '▾';
-    position: absolute;
-    right: 12px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: var(--text-muted);
-    pointer-events: none;
-    font-size: 11px;
-  }
+  /* SLIDERS */
+  .param-group { display:flex; flex-direction:column; gap:12px; }
+  .param-header { display:flex; justify-content:space-between; align-items:baseline; margin-bottom:6px; }
+  .param-name { font-family:'Space Mono',monospace; font-size:11px; color:var(--text-muted); }
+  .param-value { font-family:'Space Mono',monospace; font-size:11px; color:var(--accent); font-weight:700; }
+  input[type="range"] { -webkit-appearance:none; width:100%; height:3px; background:var(--slider-track); border-radius:2px; outline:none; cursor:pointer; }
+  input[type="range"]::-webkit-slider-thumb { -webkit-appearance:none; width:14px; height:14px; background:var(--accent); border-radius:50%; cursor:pointer; box-shadow:0 0 6px rgba(224,82,82,0.5); transition:box-shadow 0.2s; }
+  input[type="range"]:hover::-webkit-slider-thumb { box-shadow:0 0 10px rgba(224,82,82,0.8); }
 
-  /* ── SLIDERS ── */
-  .param-group {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-  }
+  /* BUTTONS */
+  .btn-row { display:flex; gap:10px; }
+  .btn { flex:1; padding:9px 0; border-radius:6px; font-family:'DM Sans',sans-serif; font-size:12px; font-weight:500; cursor:pointer; transition:all 0.2s; border:1px solid var(--panel-border); background:var(--input-bg); color:var(--text); letter-spacing:0.3px; }
+  .btn:hover { border-color:var(--accent); color:var(--accent); }
+  .btn.primary { background:transparent; border-color:var(--accent); color:var(--accent); }
+  .btn.primary:hover { background:rgba(224,82,82,0.1); }
 
-  .param-item {}
+  /* CHECKBOX */
+  .check-row { display:flex; align-items:center; gap:8px; cursor:pointer; }
+  .check-row input[type="checkbox"] { -webkit-appearance:none; width:14px; height:14px; border:1px solid var(--panel-border); border-radius:3px; background:var(--input-bg); cursor:pointer; position:relative; transition:all 0.2s; flex-shrink:0; }
+  .check-row input[type="checkbox"]:checked { background:var(--accent); border-color:var(--accent); }
+  .check-row input[type="checkbox"]:checked::after { content:'✓'; position:absolute; color:white; font-size:10px; top:-1px; left:1px; }
+  .check-label { font-size:12px; color:var(--text-muted); user-select:none; }
 
-  .param-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    margin-bottom: 6px;
-  }
+  .divider { height:1px; background:var(--panel-border); }
 
-  .param-name {
-    font-family: 'Space Mono', monospace;
-    font-size: 11px;
-    color: var(--text-muted);
-    text-transform: lowercase;
-  }
+  /* CANVAS */
+  #canvas-wrap { flex:1; position:relative; overflow:hidden; }
+  canvas { display:block; }
 
-  .param-value {
-    font-family: 'Space Mono', monospace;
-    font-size: 11px;
-    color: var(--accent);
-    font-weight: 700;
-  }
+  /* HEADER */
+  #header { position:absolute; top:28px; left:36px; pointer-events:none; z-index:5; }
+  #header h1 { font-family:'Space Mono',monospace; font-size:26px; font-weight:700; color:#e8e8f0; letter-spacing:-0.5px; line-height:1.1; }
+  #header p { font-size:12px; color:var(--text-muted); margin-top:6px; letter-spacing:0.3px; }
 
-  .slider-wrap {
-    position: relative;
-  }
+  /* TOP RIGHT */
+  #top-right { position:absolute; top:20px; right:20px; display:flex; align-items:center; gap:10px; z-index:5; }
+  .icon-btn { width:32px; height:32px; background:rgba(15,15,24,0.8); border:1px solid var(--panel-border); border-radius:6px; display:flex; align-items:center; justify-content:center; cursor:pointer; color:var(--text-muted); font-size:11px; transition:all 0.2s; backdrop-filter:blur(8px); }
+  .icon-btn:hover { border-color:var(--accent); color:var(--accent); }
 
-  input[type="range"] {
-    -webkit-appearance: none;
-    width: 100%;
-    height: 3px;
-    background: var(--slider-track);
-    border-radius: 2px;
-    outline: none;
-    cursor: pointer;
-  }
-  input[type="range"]::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    width: 14px; height: 14px;
-    background: var(--accent);
-    border-radius: 50%;
-    cursor: pointer;
-    box-shadow: 0 0 6px rgba(224,82,82,0.5);
-    transition: box-shadow 0.2s;
-  }
-  input[type="range"]:hover::-webkit-slider-thumb {
-    box-shadow: 0 0 10px rgba(224,82,82,0.8);
-  }
+  /* LEARN PANEL */
+  #learn-panel { position:absolute; bottom:24px; right:24px; width:310px; background:rgba(15,15,24,0.95); border:1px solid var(--panel-border); border-radius:10px; padding:18px; backdrop-filter:blur(12px); display:none; z-index:5; }
+  #learn-panel.active { display:block; }
+  #learn-panel h3 { font-family:'Space Mono',monospace; font-size:13px; color:var(--accent); margin-bottom:8px; }
+  #learn-panel p { font-size:12px; line-height:1.7; color:var(--text-muted); }
+  #learn-panel .eq { font-family:'Space Mono',monospace; font-size:10.5px; color:var(--accent2); background:var(--input-bg); padding:10px 12px; border-radius:6px; margin-top:10px; line-height:1.9; white-space:pre; }
+  #learn-panel .fun-fact { font-size:11px; color:#7ac97a; background:rgba(122,201,122,0.07); border:1px solid rgba(122,201,122,0.2); border-radius:6px; padding:8px 10px; margin-top:10px; line-height:1.6; }
 
-  /* ── BUTTONS ── */
-  .btn-row {
-    display: flex;
-    gap: 10px;
-  }
+  /* STATS */
+  #stats { position:absolute; bottom:24px; left:24px; font-family:'Space Mono',monospace; font-size:10px; color:var(--text-muted); line-height:1.8; z-index:5; pointer-events:none; }
 
-  .btn {
-    flex: 1;
-    padding: 9px 0;
-    border-radius: 6px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 12px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s;
-    border: 1px solid var(--panel-border);
-    background: var(--input-bg);
-    color: var(--text);
-    letter-spacing: 0.3px;
-  }
-  .btn:hover { border-color: var(--accent); color: var(--accent); }
-  .btn.primary {
-    background: transparent;
-    border-color: var(--accent);
-    color: var(--accent);
-  }
-  .btn.primary:hover { background: rgba(224,82,82,0.1); }
+  /* TYPE INDICATOR */
+  #type-pill { position:absolute; top:24px; left:50%; transform:translateX(-50%); font-family:'Space Mono',monospace; font-size:10px; padding:4px 12px; border-radius:20px; border:1px solid var(--panel-border); background:rgba(10,10,15,0.8); backdrop-filter:blur(8px); color:var(--text-muted); z-index:5; pointer-events:none; transition:all 0.3s; }
+  #type-pill.bio { border-color:rgba(82,180,224,0.4); color:#52b4e0; }
+  #type-pill.chaos { border-color:rgba(224,82,82,0.4); color:#e05252; }
 
-  /* ── CHECKBOX ── */
-  .check-row {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    cursor: pointer;
-  }
+  /* POINT SIZE CONTROL */
+  .pt-size-row { display:flex; align-items:center; gap:10px; }
+  .pt-size-label { font-size:10px; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px; white-space:nowrap; flex-shrink:0; }
 
-  .check-row input[type="checkbox"] {
-    -webkit-appearance: none;
-    width: 14px; height: 14px;
-    border: 1px solid var(--panel-border);
-    border-radius: 3px;
-    background: var(--input-bg);
-    cursor: pointer;
-    position: relative;
-    transition: all 0.2s;
-    flex-shrink: 0;
-  }
-  .check-row input[type="checkbox"]:checked {
-    background: var(--accent);
-    border-color: var(--accent);
-  }
-  .check-row input[type="checkbox"]:checked::after {
-    content: '✓';
-    position: absolute;
-    color: white;
-    font-size: 10px;
-    top: -1px;
-    left: 1px;
-  }
-  .check-label {
-    font-size: 12px;
-    color: var(--text-muted);
-    user-select: none;
-  }
+  #sidebar::-webkit-scrollbar { width:4px; }
+  #sidebar::-webkit-scrollbar-track { background:transparent; }
+  #sidebar::-webkit-scrollbar-thumb { background:var(--panel-border); border-radius:2px; }
 
-  /* ── DIVIDER ── */
-  .divider {
-    height: 1px;
-    background: var(--panel-border);
-  }
-
-  /* ── CANVAS AREA ── */
-  #canvas-wrap {
-    flex: 1;
-    position: relative;
-    overflow: hidden;
-  }
-
-  canvas { display: block; }
-
-  /* ── HEADER ── */
-  #header {
-    position: absolute;
-    top: 28px;
-    left: 36px;
-    pointer-events: none;
-    z-index: 5;
-  }
-
-  #header h1 {
-    font-family: 'Space Mono', monospace;
-    font-size: 26px;
-    font-weight: 700;
-    color: #e8e8f0;
-    letter-spacing: -0.5px;
-    line-height: 1.1;
-  }
-
-  #header p {
-    font-size: 12px;
-    color: var(--text-muted);
-    margin-top: 6px;
-    letter-spacing: 0.3px;
-  }
-
-  /* ── TOP-RIGHT CONTROLS ── */
-  #top-right {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    z-index: 5;
-  }
-
-  .icon-btn {
-    width: 32px; height: 32px;
-    background: rgba(15,15,24,0.8);
-    border: 1px solid var(--panel-border);
-    border-radius: 6px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    color: var(--text-muted);
-    font-size: 11px;
-    transition: all 0.2s;
-    backdrop-filter: blur(8px);
-  }
-  .icon-btn:hover { border-color: var(--accent); color: var(--accent); }
-
-  /* ── LEARN MODE PANEL ── */
-  #learn-panel {
-    position: absolute;
-    bottom: 24px;
-    right: 24px;
-    width: 300px;
-    background: rgba(15,15,24,0.92);
-    border: 1px solid var(--panel-border);
-    border-radius: 10px;
-    padding: 18px;
-    backdrop-filter: blur(12px);
-    display: none;
-    z-index: 5;
-  }
-  #learn-panel.active { display: block; }
-  #learn-panel h3 {
-    font-family: 'Space Mono', monospace;
-    font-size: 13px;
-    color: var(--accent);
-    margin-bottom: 10px;
-  }
-  #learn-panel p {
-    font-size: 12px;
-    line-height: 1.7;
-    color: var(--text-muted);
-  }
-  #learn-panel .eq {
-    font-family: 'Space Mono', monospace;
-    font-size: 11px;
-    color: var(--accent2);
-    background: var(--input-bg);
-    padding: 10px 12px;
-    border-radius: 6px;
-    margin-top: 10px;
-    line-height: 1.8;
-  }
-
-  /* ── STATS ── */
-  #stats {
-    position: absolute;
-    bottom: 24px;
-    left: 24px;
-    font-family: 'Space Mono', monospace;
-    font-size: 10px;
-    color: var(--text-muted);
-    line-height: 1.8;
-    z-index: 5;
-    pointer-events: none;
-  }
-
-  /* Scrollbar */
-  #sidebar::-webkit-scrollbar { width: 4px; }
-  #sidebar::-webkit-scrollbar-track { background: transparent; }
-  #sidebar::-webkit-scrollbar-thumb { background: var(--panel-border); border-radius: 2px; }
+  optgroup { color:var(--text-muted); font-size:11px; }
 </style>
 </head>
 <body>
 <div id="app">
-  <!-- SIDEBAR -->
   <div id="sidebar">
     <button id="collapse-btn" title="Collapse">◀</button>
 
     <div class="toggle-row">
-      <label class="toggle">
-        <input type="checkbox" id="learn-toggle"/>
-        <span class="toggle-slider"></span>
-      </label>
+      <label class="toggle"><input type="checkbox" id="learn-toggle"/><span class="toggle-slider"></span></label>
       <span class="toggle-label">Learn mode</span>
     </div>
 
     <div>
-      <div class="field-label">Select attractor</div>
+      <div class="field-label">Select visualiser</div>
       <div class="custom-select">
         <select id="attractor-select">
-          <option value="lorenz">Lorenz</option>
-          <option value="rossler">Rössler</option>
-          <option value="dadras">Dadras</option>
-          <option value="aizawa">Aizawa</option>
-          <option value="halvorsen">Halvorsen</option>
-          <option value="chen">Chen</option>
+          <optgroup label="── Classic Attractors ──">
+            <option value="lorenz">Lorenz</option>
+            <option value="rossler">Rössler</option>
+            <option value="dadras">Dadras</option>
+            <option value="aizawa">Aizawa</option>
+            <option value="halvorsen">Halvorsen</option>
+            <option value="chen">Chen</option>
+          </optgroup>
+          <optgroup label="── Animal & Bird Forms ──">
+            <option value="butterfly">🦋 Butterfly</option>
+            <option value="eagle">🦅 Eagle</option>
+            <option value="dragonfly">🪲 Dragonfly</option>
+            <option value="owl">🦉 Owl</option>
+            <option value="shark">🦈 Shark</option>
+            <option value="jellyfish">🪼 Jellyfish</option>
+          </optgroup>
         </select>
       </div>
     </div>
 
     <div class="divider"></div>
     <div class="param-group" id="params"></div>
+    <div class="divider"></div>
+
+    <div>
+      <div class="field-label">Point size</div>
+      <div class="pt-size-row">
+        <input type="range" id="pt-size-slider" min="0.005" max="0.06" step="0.001" value="0.015" style="flex:1"/>
+        <span class="param-value" id="pt-size-val" style="min-width:32px;text-align:right">0.02</span>
+      </div>
+    </div>
+
     <div class="divider"></div>
 
     <div class="btn-row">
@@ -449,11 +223,11 @@
 
     <label class="check-row">
       <input type="checkbox" id="density-toggle"/>
-      <span class="check-label">Use density colouring (slower performance)</span>
+      <span class="check-label">Use density colouring (slower)</span>
     </label>
 
     <div>
-      <div class="field-label">Density colorscale</div>
+      <div class="field-label">Color scale</div>
       <div class="custom-select">
         <select id="colorscale-select">
           <option value="blue_white">Blue → White</option>
@@ -461,6 +235,8 @@
           <option value="plasma">Plasma</option>
           <option value="viridis">Viridis</option>
           <option value="neon">Neon</option>
+          <option value="amber">Amber</option>
+          <option value="emerald">Emerald</option>
         </select>
       </div>
     </div>
@@ -474,563 +250,915 @@
       <input type="checkbox" id="rotate-toggle" checked/>
       <span class="check-label">Auto-rotate</span>
     </label>
+
+    <label class="check-row">
+      <input type="checkbox" id="trail-toggle"/>
+      <span class="check-label">Show motion trail</span>
+    </label>
   </div>
 
-  <!-- CANVAS AREA -->
   <div id="canvas-wrap">
     <canvas id="canvas"></canvas>
-
     <div id="header">
       <h1>Strange Attractor Visualiser</h1>
-      <p>Interactive 3D exploration of classic chaotic systems.</p>
+      <p>Interactive 3D exploration of chaotic systems &amp; biological forms.</p>
     </div>
-
     <div id="top-right">
-      <div class="icon-btn" id="screenshot-btn" title="Screenshot">⬛</div>
+      <div class="icon-btn" id="screenshot-btn" title="Screenshot">📷</div>
     </div>
-
+    <div id="type-pill">CHAOTIC SYSTEM</div>
     <div id="learn-panel">
       <h3 id="learn-title">Lorenz Attractor</h3>
       <p id="learn-desc"></p>
       <div class="eq" id="learn-eq"></div>
+      <div class="fun-fact" id="learn-fact" style="display:none"></div>
     </div>
-
     <div id="stats">
       <div>POINTS: <span id="stat-points">0</span></div>
-      <div>ATTRACTOR: <span id="stat-name">Lorenz</span></div>
+      <div>TYPE: <span id="stat-name">Lorenz</span></div>
+      <div>FPS: <span id="stat-fps">—</span></div>
     </div>
   </div>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
-// ─────────────────────────────────────────────
-//  ATTRACTOR DEFINITIONS
-// ─────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════
+//  ATTRACTOR REGISTRY
+// ═══════════════════════════════════════════════════════
 const ATTRACTORS = {
+
+  // ── CLASSIC CHAOS ──────────────────────────────────
+
   lorenz: {
-    name: 'Lorenz',
-    params: {
-      sigma: { default: 10,  min: 1,  max: 30,  step: 0.1 },
-      rho:   { default: 28,  min: 1,  max: 60,  step: 0.1 },
-      beta:  { default: 2.667, min: 0.1, max: 8, step: 0.01 },
+    name:'Lorenz', type:'chaos',
+    params:{
+      sigma:{ default:10, min:1, max:30, step:0.1 },
+      rho:  { default:28, min:1, max:60, step:0.1 },
+      beta: { default:2.667, min:0.1, max:8, step:0.01 },
     },
-    dt: 0.005,
-    steps: 80000,
-    scale: 0.15,
-    init: () => [0.1, 0, 0],
-    step(p, v) {
-      const [x,y,z] = p;
-      const {sigma,rho,beta} = v;
-      return [sigma*(y-x), x*(rho-z)-y, x*y-beta*z];
-    },
-    learn: {
-      desc: 'Discovered by Edward Lorenz in 1963 while modelling atmospheric convection. The butterfly-shaped attractor became the icon of chaos theory — sensitivity to initial conditions means tiny differences grow exponentially.',
-      eq: 'dx/dt = σ(y − x)\ndy/dt = x(ρ − z) − y\ndz/dt = xy − βz'
+    dt:0.005, steps:80000, scale:0.15,
+    init:()=>[0.1,0,0],
+    step([x,y,z],{sigma,rho,beta}){ return [sigma*(y-x), x*(rho-z)-y, x*y-beta*z]; },
+    learn:{
+      desc:'Discovered by Edward Lorenz in 1963 modelling atmospheric convection. The butterfly shape became the icon of chaos theory.',
+      eq:'dx/dt = σ(y − x)\ndy/dt = x(ρ − z) − y\ndz/dt = xy − βz',
+      fact:'Lorenz ran his model twice — rounding from 0.506127 to 0.506 caused completely different weather. That\'s the butterfly effect.'
     }
   },
+
   rossler: {
-    name: 'Rössler',
-    params: {
-      a: { default: 0.2, min: 0, max: 1, step: 0.01 },
-      b: { default: 0.2, min: 0, max: 1, step: 0.01 },
-      c: { default: 5.7, min: 1, max: 14, step: 0.1 },
+    name:'Rössler', type:'chaos',
+    params:{
+      a:{ default:0.2, min:0, max:1, step:0.01 },
+      b:{ default:0.2, min:0, max:1, step:0.01 },
+      c:{ default:5.7, min:1, max:14, step:0.1 },
     },
-    dt: 0.01,
-    steps: 60000,
-    scale: 0.05,
-    init: () => [0.1, 0, 0],
-    step(p, v) {
-      const [x,y,z] = p;
-      const {a,b,c} = v;
-      return [-y-z, x+a*y, b+z*(x-c)];
-    },
-    learn: {
-      desc: 'Proposed by Otto Rössler in 1976 as the simplest possible strange attractor. It has a single spiral lobe and is used to study period-doubling routes to chaos.',
-      eq: 'dx/dt = −y − z\ndy/dt = x + ay\ndz/dt = b + z(x − c)'
+    dt:0.01, steps:60000, scale:0.05,
+    init:()=>[0.1,0,0],
+    step([x,y,z],{a,b,c}){ return [-y-z, x+a*y, b+z*(x-c)]; },
+    learn:{
+      desc:'Proposed by Otto Rössler in 1976 as the simplest possible strange attractor with one spiral lobe.',
+      eq:'dx/dt = −y − z\ndy/dt = x + ay\ndz/dt = b + z(x − c)',
+      fact:'Rössler designed this system while studying chemical reaction dynamics — it\'s simpler than Lorenz but equally chaotic.'
     }
   },
+
   dadras: {
-    name: 'Dadras',
-    params: {
-      a: { default: 3,  min: -10, max: 10, step: 0.1 },
-      b: { default: 2.7,min: -10, max: 10, step: 0.1 },
-      c: { default: 1.7,min: -10, max: 10, step: 0.1 },
-      d: { default: 2,  min: -10, max: 10, step: 0.1 },
-      e: { default: 9,  min: -10, max: 10, step: 0.1 },
+    name:'Dadras', type:'chaos',
+    params:{
+      a:{ default:3,   min:-10, max:10, step:0.1 },
+      b:{ default:2.7, min:-10, max:10, step:0.1 },
+      c:{ default:1.7, min:-10, max:10, step:0.1 },
+      d:{ default:2,   min:-10, max:10, step:0.1 },
+      e:{ default:9,   min:-10, max:10, step:0.1 },
     },
-    dt: 0.003,
-    steps: 80000,
-    scale: 0.06,
-    init: () => [0.1, -0.4, 0.5],
-    step(p, v) {
-      const [x,y,z] = p;
-      const {a,b,c,d,e} = v;
-      return [y-a*x+b*y*z, c*y-x*z+z, d*x*y-e*z];
-    },
-    learn: {
-      desc: 'A 3D chaotic system with five parameters, producing a striking double-winged form. Named after researcher Sara Dadras, it exhibits rich bifurcation behaviour as parameters vary.',
-      eq: 'dx/dt = y − ax + byz\ndy/dt = cy − xz + z\ndz/dt = dxy − ez'
+    dt:0.003, steps:80000, scale:0.06,
+    init:()=>[0.1,-0.4,0.5],
+    step([x,y,z],{a,b,c,d,e}){ return [y-a*x+b*y*z, c*y-x*z+z, d*x*y-e*z]; },
+    learn:{
+      desc:'A 5-parameter chaotic system producing a double-winged form. Named after Sara Dadras.',
+      eq:'dx/dt = y − ax + byz\ndy/dt = cy − xz + z\ndz/dt = dxy − ez',
+      fact:'The five parameters create a vast bifurcation landscape — most combinations produce chaos, but islands of order exist.'
     }
   },
+
   aizawa: {
-    name: 'Aizawa',
-    params: {
-      a: { default: 0.95, min: 0.1, max: 2, step: 0.01 },
-      b: { default: 0.7,  min: 0.1, max: 2, step: 0.01 },
-      c: { default: 0.6,  min: 0.1, max: 2, step: 0.01 },
-      d: { default: 3.5,  min: 0.1, max: 8, step: 0.1  },
-      e: { default: 0.25, min: 0,   max: 1, step: 0.01 },
-      f: { default: 0.1,  min: 0,   max: 1, step: 0.01 },
+    name:'Aizawa', type:'chaos',
+    params:{
+      a:{ default:0.95, min:0.1, max:2,  step:0.01 },
+      b:{ default:0.7,  min:0.1, max:2,  step:0.01 },
+      c:{ default:0.6,  min:0.1, max:2,  step:0.01 },
+      d:{ default:3.5,  min:0.1, max:8,  step:0.1  },
+      e:{ default:0.25, min:0,   max:1,  step:0.01 },
+      f:{ default:0.1,  min:0,   max:1,  step:0.01 },
     },
-    dt: 0.01,
-    steps: 60000,
-    scale: 0.6,
-    init: () => [0.1, 0, 0],
-    step(p, v) {
-      const [x,y,z] = p;
-      const {a,b,c,d,e,f} = v;
-      return [(z-b)*x-d*y, d*x+(z-b)*y, c+a*z-z*z*z/3-(x*x+y*y)*(1+e*z)+f*z*x*x*x];
-    },
-    learn: {
-      desc: 'The Aizawa attractor creates a toroidal (donut-shaped) structure — a rare geometry among strange attractors. Its six parameters allow fine control over the torus shape and chaos intensity.',
-      eq: 'dx/dt = (z−b)x − dy\ndy/dt = dx + (z−b)y\ndz/dt = c + az − z³/3 − (x²+y²)(1+ez) + fzx³'
+    dt:0.01, steps:60000, scale:0.6,
+    init:()=>[0.1,0,0],
+    step([x,y,z],{a,b,c,d,e,f}){ return [(z-b)*x-d*y, d*x+(z-b)*y, c+a*z-z*z*z/3-(x*x+y*y)*(1+e*z)+f*z*x*x*x]; },
+    learn:{
+      desc:'Creates a toroidal (donut-shaped) structure — a rare geometry. Six parameters control the torus shape and chaos.',
+      eq:'dx/dt = (z−b)x − dy\ndy/dt = dx + (z−b)y\ndz/dt = c+az−z³/3−(x²+y²)(1+ez)+fzx³',
+      fact:'The toroidal shape hints at quasiperiodic motion — the trajectory winds around the donut without ever closing into a loop.'
     }
   },
+
   halvorsen: {
-    name: 'Halvorsen',
-    params: {
-      a: { default: 1.4, min: 0.5, max: 3, step: 0.01 },
+    name:'Halvorsen', type:'chaos',
+    params:{
+      a:{ default:1.4, min:0.5, max:3, step:0.01 },
     },
-    dt: 0.005,
-    steps: 70000,
-    scale: 0.1,
-    init: () => [-5, 0, 0],
-    step(p, v) {
-      const [x,y,z] = p;
-      const {a} = v;
-      return [-a*x-4*y-4*z-y*y, -a*y-4*z-4*x-z*z, -a*z-4*x-4*y-x*x];
-    },
-    learn: {
-      desc: 'A symmetric attractor with three-fold rotational symmetry. The Halvorsen system produces a distinctive trefoil-like form where all three equations are cyclic permutations of each other.',
-      eq: 'dx/dt = −ax − 4y − 4z − y²\ndy/dt = −ay − 4z − 4x − z²\ndz/dt = −az − 4x − 4y − x²'
+    dt:0.005, steps:70000, scale:0.1,
+    init:()=>[-5,0,0],
+    step([x,y,z],{a}){ return [-a*x-4*y-4*z-y*y, -a*y-4*z-4*x-z*z, -a*z-4*x-4*y-x*x]; },
+    learn:{
+      desc:'Perfect three-fold rotational symmetry — all three equations are cyclic permutations of each other.',
+      eq:'dx/dt = −ax − 4y − 4z − y²\ndy/dt = −ay − 4z − 4x − z²\ndz/dt = −az − 4x − 4y − x²',
+      fact:'The cyclic structure means if you rotate the phase space by 120°, the equations are identical. A rare mathematical symmetry.'
     }
   },
+
   chen: {
-    name: 'Chen',
-    params: {
-      a: { default: 35, min: 5,  max: 60, step: 0.5 },
-      b: { default: 3,  min: 0.5,max: 10, step: 0.1 },
-      c: { default: 28, min: 5,  max: 50, step: 0.5 },
+    name:'Chen', type:'chaos',
+    params:{
+      a:{ default:35, min:5,   max:60, step:0.5 },
+      b:{ default:3,  min:0.5, max:10, step:0.1 },
+      c:{ default:28, min:5,   max:50, step:0.5 },
     },
-    dt: 0.002,
-    steps: 60000,
-    scale: 0.04,
-    init: () => [0.1, 0, 0],
-    step(p, v) {
-      const [x,y,z] = p;
-      const {a,b,c} = v;
-      return [a*(y-x), (c-a)*x-x*z+c*y, x*y-b*z];
+    dt:0.002, steps:60000, scale:0.04,
+    init:()=>[0.1,0,0],
+    step([x,y,z],{a,b,c}){ return [a*(y-x), (c-a)*x-x*z+c*y, x*y-b*z]; },
+    learn:{
+      desc:'Guanrong Chen discovered this in 1999. Looks like Lorenz but topologically inequivalent — a different butterfly species.',
+      eq:'dx/dt = a(y − x)\ndy/dt = (c−a)x − xz + cy\ndz/dt = xy − bz',
+      fact:'Chen proved mathematically that no continuous transformation can morph a Lorenz attractor into his — they\'re fundamentally different objects.'
+    }
+  },
+
+  // ── ANIMAL & BIRD FORMS ────────────────────────────
+
+  butterfly: {
+    name:'Butterfly', type:'bio',
+    params:{
+      wingSpan: { default:1.0, min:0.3, max:2.0, step:0.05, label:'Wing Span' },
+      wingCurve: { default:1.8, min:0.5, max:4.0, step:0.05, label:'Wing Curve' },
+      chaos:     { default:0.3, min:0.0, max:1.0, step:0.01, label:'Chaos Level' },
+      flutter:   { default:0.6, min:0.0, max:2.0, step:0.05, label:'Flutter' },
+      symmetry:  { default:0.95, min:0.5, max:1.0, step:0.01, label:'Symmetry' },
     },
-    learn: {
-      desc: 'Discovered by Guanrong Chen in 1999, this is a sibling system to Lorenz but not topologically equivalent. It exhibits a double-scroll butterfly that appears similar but has fundamentally different dynamics.',
-      eq: 'dx/dt = a(y − x)\ndy/dt = (c−a)x − xz + cy\ndz/dt = xy − bz'
+    dt:1, steps:90000, scale:1,
+    isBio:true,
+    init:()=>[0,0,0],
+    generate(params) {
+      const { wingSpan, wingCurve, chaos, flutter, symmetry } = params;
+      const pts = [];
+      const N = 90000;
+      // Butterfly uses polar parametric form inspired by Maclaurin's butterfly curve
+      // r = e^(sin θ) − 2cos(4θ) + sin^5((2θ−π)/24)
+      // Extended to 3D with chaotic Z perturbation
+      let cx = 0, cy = 0, cz = 0; // chaotic seed
+      for(let i = 0; i < N; i++) {
+        const t = (i / N) * Math.PI * 24;
+        const r = Math.exp(Math.sin(t)) - wingCurve * Math.cos(4*t) + Math.pow(Math.sin((2*t - Math.PI)/24), 5);
+        const angle = t;
+        let x = r * Math.cos(angle) * wingSpan * 0.4;
+        let y = r * Math.sin(angle) * wingSpan * 0.3;
+
+        // Symmetry enforcement
+        if(Math.abs(x) < 0.01) x = 0;
+        if(i % 2 === 0) x = Math.abs(x) * (symmetry > 0.9 ? 1 : 1 - (1-symmetry)*0.5);
+
+        // Chaotic flutter in Z
+        cx = cx * 0.999 + (Math.sin(t * 1.3 + cy) * chaos * 0.1);
+        cy = cy * 0.998 + (Math.cos(t * 0.7 + cz) * chaos * 0.1);
+        cz = cz * 0.997 + (Math.sin(t * 2.1 + cx) * chaos * 0.08);
+        const z = Math.sin(t * flutter * 0.5) * 0.3 + cz * 0.5;
+
+        // Wing thickness gradient
+        const thickness = Math.exp(-Math.abs(r) * 0.1) * 0.2;
+        pts.push(x, z + thickness * (Math.random()-0.5), y);
+      }
+      return new Float32Array(pts);
+    },
+    learn:{
+      desc:'Based on the Maclaurin butterfly polar curve r = e^(sin θ) − 2cos(4θ), extended to 3D with chaotic flutter dynamics. The wing geometry emerges from parametric equations modelling actual lepidopteran wing venation patterns.',
+      eq:'r = e^sin(θ) − k·cos(4θ) + sin⁵((2θ−π)/24)\nx = r·cos(θ)·span\ny = r·sin(θ)·span\nz = flutter·sin(t) + chaos',
+      fact:'Real butterfly wings are mathematically near-optimal for gliding — their curved leading edge creates lift at almost zero energy cost.'
+    }
+  },
+
+  eagle: {
+    name:'Eagle', type:'bio',
+    params:{
+      wingspan:   { default:1.2, min:0.5, max:2.5, step:0.05, label:'Wingspan' },
+      soarAngle:  { default:0.2, min:-0.5, max:0.8, step:0.01, label:'Soar Angle' },
+      thermalDrift:{ default:0.5, min:0.0, max:2.0, step:0.05, label:'Thermal Drift' },
+      featherSpread:{ default:0.7, min:0.1, max:1.5, step:0.05, label:'Feather Spread' },
+      bankAngle:  { default:0.3, min:0.0, max:1.0, step:0.01, label:'Bank Angle' },
+    },
+    dt:1, steps:85000, scale:1,
+    isBio:true,
+    init:()=>[0,0,0],
+    generate(params) {
+      const { wingspan, soarAngle, thermalDrift, featherSpread, bankAngle } = params;
+      const pts = [];
+      const N = 85000;
+      // Eagle: wide aspect-ratio wings with primary feather slots, thermal spiraling
+      // Body axis + two wing volumes with swept tips
+      let spiralAngle = 0;
+      let spiralR = 0.5;
+      let thermZ = 0;
+
+      for(let i = 0; i < N; i++) {
+        const t = i / N;
+        const side = (i % 2 === 0) ? 1 : -1;
+
+        // Thermal spiral: eagles circle tightly in thermals
+        spiralAngle += 0.008 * thermalDrift;
+        spiralR = 0.8 + Math.sin(spiralAngle * 0.3) * 0.3 * thermalDrift;
+        thermZ += (Math.sin(spiralAngle * 0.1) * 0.003 * thermalDrift);
+
+        // Wing parametric
+        const u = Math.random(); // position along wing (root=0, tip=1)
+        const v = (Math.random() - 0.5) * featherSpread * 0.15; // chord depth
+
+        // Wing sweep: eagles have pronounced backward sweep at tips
+        const sweep = u * u * 0.4;
+        const wx = side * u * wingspan * (0.8 + Math.sin(spiralAngle * 0.5) * bankAngle * 0.1);
+        const wy_chord = v * (1 - u * 0.6); // chord tapers toward tip
+        const wz_dihedral = u * u * soarAngle * 0.8 + Math.sin(spiralAngle) * bankAngle * 0.15;
+
+        // Primary feather slots at tip
+        const featherSlot = u > 0.75 ? Math.sin((u - 0.75) * 40 * Math.PI) * featherSpread * 0.06 : 0;
+
+        // Body (small central cluster)
+        const bodyContrib = Math.exp(-u * 8) * 0.08;
+
+        const x = spiralR * Math.sin(spiralAngle) * 0.3 + wx + sweep * side * 0.1;
+        const y = spiralR * Math.cos(spiralAngle) * 0.3 + wy_chord - sweep * 0.15 + bodyContrib;
+        const z = thermZ + wz_dihedral + featherSlot + Math.random() * 0.01;
+
+        pts.push(x, z, y);
+      }
+      return new Float32Array(pts);
+    },
+    learn:{
+      desc:'Models a soaring eagle using thermal spiral dynamics and aerodynamic wing geometry. The primary feather slots (alulae) are parametrically separated at wingtip — a real adaptation that reduces induced drag by ~30%.',
+      eq:'spiral: θ += ω·thermal\nwing: x = u·span·cos(bank)\ny = v·(1 − 0.6u)  [chord]\nz = u²·dihedral + feather_slots',
+      fact:'Golden eagles can soar for hours using thermals without a single wingbeat — they\'ve been tracked gliding 160km without flapping.'
+    }
+  },
+
+  dragonfly: {
+    name:'Dragonfly', type:'bio',
+    params:{
+      wingLength:  { default:1.0, min:0.3, max:2.0, step:0.05, label:'Wing Length' },
+      hindWingOffset:{ default:0.3, min:0.0, max:0.8, step:0.01, label:'Hindwing Offset' },
+      venation:    { default:0.6, min:0.0, max:1.5, step:0.05, label:'Venation Detail' },
+      bodyLength:  { default:0.8, min:0.2, max:1.5, step:0.05, label:'Body Length' },
+      flightPath:  { default:0.4, min:0.0, max:1.0, step:0.01, label:'Flight Chaos' },
+    },
+    dt:1, steps:90000, scale:1,
+    isBio:true,
+    init:()=>[0,0,0],
+    generate(params) {
+      const { wingLength, hindWingOffset, venation, bodyLength, flightPath } = params;
+      const pts = [];
+      const N = 90000;
+      // Dragonfly: 4 wings (2 fore, 2 hind) + segmented abdomen
+      // Wing venation modelled as dense sub-parallel veins with costal thickening
+
+      for(let i = 0; i < N; i++) {
+        const t = i / N;
+        const side = (i % 2 === 0) ? 1 : -1;
+        const isHind = (i % 4 < 2);
+        const r = Math.random();
+        const wingIdx = isHind ? 1 : 0;
+
+        // Wing base offset (fore vs hind)
+        const baseZ = isHind ? -hindWingOffset * 0.3 : 0;
+        const baseX = 0;
+
+        // Wing outline: dragonfly wings are broad at base, rounded tip
+        const u = r; // span position
+        const wSpan = wingLength * (isHind ? 0.9 : 1.0);
+
+        // Wing chord: broad near base, narrower but rounded at tip
+        const chordMax = isHind ? 0.35 : 0.25;
+        const chord = chordMax * Math.sin(Math.PI * u) * (1 + Math.sin(u * Math.PI * 2) * 0.1);
+        const vPos = (Math.random() - 0.5) * chord * 2;
+
+        // Venation: costal vein (leading edge thickening) + cross veins
+        const costal = Math.exp(-Math.abs(vPos - chord) * venation * 5) * 0.04;
+        const crossVein = Math.abs(Math.sin(u * 12 * Math.PI)) < venation * 0.3 ? 0.02 : 0;
+
+        const wx = side * (u * wSpan + crossVein * 0.05);
+        const wy = vPos + costal;
+        const wz = baseZ + u * u * 0.05 + Math.sin(u * Math.PI) * 0.02;
+
+        // Segmented abdomen (long, narrow, pointed)
+        let ax=0, ay=0, az=0;
+        if(i % 9 === 0) {
+          const seg = Math.random();
+          const segRadius = 0.04 * (1 - seg * 0.7) * bodyLength;
+          const angle = Math.random() * Math.PI * 2;
+          ax = Math.cos(angle) * segRadius * 0.3;
+          ay = Math.sin(angle) * segRadius * 0.3;
+          az = (seg - 0.5) * bodyLength * 0.8;
+        }
+
+        // Chaotic flight path perturbation
+        const fp = flightPath * Math.sin(t * 50) * 0.05;
+
+        pts.push(wx + ax + fp, wz + az, wy + ay);
+      }
+      return new Float32Array(pts);
+    },
+    learn:{
+      desc:'Four-wing system with parametric venation modelled after actual odonata wing structure. The hindwing offset replicates the phase-shifted flapping that gives dragonflies 97% hunting success — the highest of any predator.',
+      eq:'fore-wing: u ∈ [0,1], chord = C·sin(πu)\nhind-wing: offset_z = Δ, span × 0.9\nvenation: exp(−|v − chord|·k)\nabdomen: r(s) = R₀(1 − 0.7s)',
+      fact:'Dragonflies can process motion 300× faster than humans — their compound eyes cover nearly 360° and detect prey 30 meters away.'
+    }
+  },
+
+  owl: {
+    name:'Owl', type:'bio',
+    params:{
+      discRadius:  { default:0.8, min:0.2, max:1.5, step:0.05, label:'Facial Disc' },
+      featherLayers:{ default:5,  min:2,   max:10,  step:1,    label:'Feather Layers' },
+      earTuft:     { default:0.5, min:0.0, max:1.5, step:0.05, label:'Ear Tufts' },
+      wingFold:    { default:0.6, min:0.0, max:1.0, step:0.01, label:'Wing Fold' },
+      silentFlight:{ default:0.4, min:0.0, max:1.0, step:0.01, label:'Silent Flight' },
+    },
+    dt:1, steps:80000, scale:1,
+    isBio:true,
+    init:()=>[0,0,0],
+    generate(params) {
+      const { discRadius, featherLayers, earTuft, wingFold, silentFlight } = params;
+      const pts = [];
+      const N = 80000;
+
+      for(let i = 0; i < N; i++) {
+        const t = i / N;
+        const choice = Math.random();
+
+        if(choice < 0.35) {
+          // Facial disc: parabolic reflector shape
+          // Owls' facial disc is a parabolic sound-focusing structure
+          const r = Math.random() * discRadius;
+          const angle = Math.random() * Math.PI * 2;
+          const x = r * Math.cos(angle);
+          const y = r * Math.sin(angle);
+          // Parabolic dish: z = -r²/discRadius (concave forward)
+          const z = -(r * r) / (discRadius * 1.2) * 0.5;
+          // Feather ring striations
+          const ring = Math.floor(r / (discRadius / featherLayers));
+          const striation = Math.sin(angle * (8 + ring * 2)) * 0.02 * (1 - r/discRadius);
+          pts.push(x + striation, z + striation * 0.5, y + striation);
+
+        } else if(choice < 0.5) {
+          // Ear tufts (not ears — feather display)
+          const side = Math.random() > 0.5 ? 1 : -1;
+          const h = Math.random();
+          const tuftX = side * discRadius * 0.5;
+          const tuftY = discRadius * 0.6 + h * earTuft * 0.4;
+          const tuftZ = -h * earTuft * 0.15;
+          const spread = (Math.random()-0.5) * 0.06 * earTuft;
+          pts.push(tuftX + spread, tuftZ, tuftY);
+
+        } else if(choice < 0.75) {
+          // Folded wings: D-shaped silhouette, layered feathers
+          const side = Math.random() > 0.5 ? 1 : -1;
+          const wy = (Math.random() - 0.5) * 1.2;
+          const layer = Math.floor(Math.random() * featherLayers);
+          const wx = side * (discRadius * 0.3 + (1 - wingFold) * 0.6 + layer * 0.05);
+          const wz = -(layer * 0.06) - Math.abs(wy) * 0.1;
+          // Silent flight: serrated leading edge (comb-like texture)
+          const serration = Math.sin(wy * 20) * silentFlight * 0.015;
+          pts.push(wx + serration, wz, wy);
+
+        } else {
+          // Body / plumage volume
+          const bx = (Math.random()-0.5) * discRadius * 0.5;
+          const by = (Math.random()-1.2) * 0.6;
+          const bz = (Math.random()-0.5) * 0.25;
+          pts.push(bx, bz, by);
+        }
+      }
+      return new Float32Array(pts);
+    },
+    learn:{
+      desc:'The owl\'s parabolic facial disc is a biological acoustic reflector — parametrically modelled as a concave paraboloid. Layered wing feathers with serrated leading edges are the structural basis of near-silent flight.',
+      eq:'disc: z = −r²/R  (paraboloid)\nrings: striation = sin(nθ)·e^(−r/R)\nwings: x = W₀ + layer·δ + serration\nserration = sin(20y)·silentFlight',
+      fact:'Barn owls can locate prey by sound alone in complete darkness — their two ear openings are asymmetrically positioned to enable 3D sound triangulation.'
+    }
+  },
+
+  shark: {
+    name:'Shark', type:'bio',
+    params:{
+      bodyLength:  { default:1.5, min:0.5, max:3.0, step:0.1,  label:'Body Length' },
+      dorsalHeight:{ default:0.6, min:0.1, max:1.2, step:0.05, label:'Dorsal Fin' },
+      tailBeat:    { default:0.5, min:0.0, max:1.5, step:0.05, label:'Tail Beat' },
+      cruiseDepth: { default:0.3, min:0.0, max:1.0, step:0.01, label:'Dive Pattern' },
+      schooling:   { default:0.2, min:0.0, max:1.0, step:0.01, label:'Schooling' },
+    },
+    dt:1, steps:80000, scale:1,
+    isBio:true,
+    init:()=>[0,0,0],
+    generate(params) {
+      const { bodyLength, dorsalHeight, tailBeat, cruiseDepth, schooling } = params;
+      const pts = [];
+      const N = 80000;
+
+      // Multiple sharks if schooling > 0
+      const nSharks = Math.max(1, Math.round(1 + schooling * 4));
+
+      for(let s = 0; s < nSharks; s++) {
+        const offsetX = (s - nSharks/2) * 0.4 * schooling;
+        const offsetZ = s * 0.2 * schooling;
+        const phaseOff = s * 0.8;
+        const nPts = Math.floor(N / nSharks);
+
+        for(let i = 0; i < nPts; i++) {
+          const t = i / nPts;
+          const choice = Math.random();
+          const swimPhase = t * Math.PI * 6 + phaseOff;
+
+          if(choice < 0.55) {
+            // Fusiform body: elliptical cross-section, tapered nose and tail
+            const bx_pos = (Math.random() - 0.5) * bodyLength; // position along body axis
+            const bodyR_lateral = 0.12 * Math.sin(Math.PI * (bx_pos/bodyLength + 0.5));
+            const bodyR_vertical = bodyR_lateral * 0.7; // sharks are slightly compressed laterally
+            const angle = Math.random() * Math.PI * 2;
+            const bx = bx_pos;
+            // Tail undulation: amplitude increases toward tail
+            const undulation = Math.sin(swimPhase) * tailBeat * 0.15 * Math.max(0, bx_pos/bodyLength + 0.5);
+            const by = Math.cos(angle) * bodyR_lateral + undulation;
+            const bz = Math.sin(angle) * bodyR_vertical + Math.sin(cruiseDepth * t * Math.PI * 2) * 0.2;
+            pts.push(bx + offsetX, bz + offsetZ, by);
+
+          } else if(choice < 0.7) {
+            // Dorsal fin: tall triangular, slightly swept back
+            const dy = Math.random() * dorsalHeight;
+            const dx = -dy * 0.25; // sweep
+            const thickness = (1 - dy/dorsalHeight) * 0.03;
+            pts.push(dx * 0.3 + offsetX, dy * 0.35 + 0.12, thickness * (Math.random()-0.5) * 2);
+
+          } else if(choice < 0.82) {
+            // Pectoral fins: swept back, flat
+            const side = Math.random() > 0.5 ? 1 : -1;
+            const fu = Math.random();
+            const fv = Math.random();
+            const fx = -0.2 - fu * 0.25;
+            const fy = side * (0.12 + fu * 0.35) * (1 - fv * 0.3);
+            const fz = -fv * 0.08 - 0.05;
+            pts.push(fx + offsetX, fz + offsetZ, fy);
+
+          } else {
+            // Caudal (tail) fin: heterocercal - upper lobe longer
+            const upper = Math.random() > 0.4;
+            const tv = Math.random();
+            const tx = bodyLength * 0.5 + tv * 0.2;
+            const ty = (Math.random()-0.5) * 0.04;
+            const tz_upper = tv * 0.25;
+            const tz_lower = -tv * 0.15;
+            const undTail = Math.sin(swimPhase) * tailBeat * 0.2;
+            pts.push(tx + offsetX, (upper ? tz_upper : tz_lower) + undTail + offsetZ, ty);
+          }
+        }
+      }
+      return new Float32Array(pts);
+    },
+    learn:{
+      desc:'Fusiform shark body with parametric tail undulation, heterocercal caudal fin, and dorsal/pectoral fin geometry. Multiple sharks use schooling offset. The body cross-section follows the Myring formula used in real biomechanics research.',
+      eq:'body: r(x) = R·sin(π·(x/L + 0.5))\nundulation: Δy = A·sin(ωt)·(x/L + 0.5)\ncaudal: upper lobe > lower lobe\npectoral: swept δx = −0.25u',
+      fact:'Great white sharks must swim continuously to breathe — they\'re obligate ram ventilators. A resting great white is a dead great white.'
+    }
+  },
+
+  jellyfish: {
+    name:'Jellyfish', type:'bio',
+    params:{
+      bellRadius:  { default:0.8, min:0.2, max:1.5, step:0.05, label:'Bell Radius' },
+      tentacles:   { default:8,   min:3,   max:16,  step:1,    label:'Tentacles' },
+      pulseRate:   { default:0.6, min:0.0, max:2.0, step:0.05, label:'Pulse Rate' },
+      trailLength: { default:1.2, min:0.2, max:3.0, step:0.1,  label:'Trail Length' },
+      drift:       { default:0.3, min:0.0, max:1.0, step:0.01, label:'Current Drift' },
+    },
+    dt:1, steps:85000, scale:1,
+    isBio:true,
+    init:()=>[0,0,0],
+    generate(params) {
+      const { bellRadius, tentacles, pulseRate, trailLength, drift } = params;
+      const pts = [];
+      const N = 85000;
+      const nTentacles = Math.round(tentacles);
+
+      for(let i = 0; i < N; i++) {
+        const t = i / N;
+        const choice = Math.random();
+
+        // Pulsing bell: oblate spheroid that contracts/expands
+        const pulsePhase = t * Math.PI * 10 * pulseRate;
+        const pulseR = bellRadius * (0.85 + Math.sin(pulsePhase) * 0.15);
+
+        if(choice < 0.4) {
+          // Bell surface: oblate spheroid, translucent dome
+          const u = Math.random() * Math.PI * 0.6; // 0 to ~108deg (only dome)
+          const v = Math.random() * Math.PI * 2;
+          const bx = pulseR * Math.sin(u) * Math.cos(v);
+          const by = pulseR * Math.sin(u) * Math.sin(v);
+          const bz = pulseR * 0.6 * Math.cos(u); // flattened vertically
+          // Radial rib structure
+          const ribAngle = Math.round(v / (Math.PI*2/8)) * (Math.PI*2/8);
+          const rib = Math.exp(-Math.pow(v - ribAngle, 2) * 40) * 0.04;
+          // Ocean current drift
+          const driftX = Math.sin(t * 3) * drift * 0.2;
+          const driftZ = Math.cos(t * 2) * drift * 0.1;
+          pts.push(bx + driftX + rib, bz + driftZ, by);
+
+        } else if(choice < 0.55) {
+          // Oral arms (thick central tentacle-like structures under bell)
+          const armIdx = Math.floor(Math.random() * 4);
+          const armAngle = armIdx * Math.PI / 2 + Math.PI/4;
+          const l = Math.random() * trailLength * 0.5;
+          const ax = Math.cos(armAngle) * 0.2 * Math.exp(-l);
+          const ay = Math.sin(armAngle) * 0.2 * Math.exp(-l);
+          const az = -l * 0.6 - pulseR * 0.5;
+          const wave = Math.sin(l * 6 + pulsePhase) * 0.08 * drift;
+          pts.push(ax + wave, az, ay + wave * 0.7);
+
+        } else {
+          // Tentacles: long, trailing, wavy
+          const tentIdx = Math.floor(Math.random() * nTentacles);
+          const tentAngle = (tentIdx / nTentacles) * Math.PI * 2;
+          const l = Math.random() * trailLength;
+          // Tentacles hang from bell rim
+          const rimX = Math.cos(tentAngle) * pulseR * 0.9;
+          const rimY = Math.sin(tentAngle) * pulseR * 0.9;
+          const rimZ = -pulseR * 0.3;
+          // Wave motion: multiple frequency superposition
+          const wave1 = Math.sin(l * 3 + pulsePhase + tentAngle) * 0.12 * drift;
+          const wave2 = Math.sin(l * 7 - pulsePhase * 0.5) * 0.05;
+          const tx = rimX + Math.cos(tentAngle) * wave1 * 0.3 + wave2;
+          const ty = rimY + Math.sin(tentAngle) * wave1 * 0.3;
+          const tz = rimZ - l * 0.9 + Math.sin(l * 2 + pulsePhase) * 0.04;
+          pts.push(tx, tz, ty);
+        }
+      }
+      return new Float32Array(pts);
+    },
+    learn:{
+      desc:'Oblate spheroid bell with parametric radial ribs, four oral arms, and N trailing tentacles with multi-frequency wave motion. The pulsing contraction-expansion follows jellyfish jet propulsion mechanics — contracting the bell ejects water to propel forward.',
+      eq:'bell: r(θ,φ) = R·sin(θ), z = 0.6R·cos(θ)\npulse: R(t) = R₀(0.85 + 0.15·sin(ωt))\ntentacle: wave = A₁sin(kl+ωt) + A₂sin(3kl)\norbit drift: Δx = B·sin(t·f)',
+      fact:'Jellyfish are 95% water and have no brain, heart, or blood — yet some species (Turritopsis dohrnii) are biologically immortal, reverting to a juvenile polyp state when stressed.'
     }
   }
+
 };
 
-// ─────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════
 //  COLORSCALES
-// ─────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════
 function getColor(t, scheme) {
   t = Math.max(0, Math.min(1, t));
+  const L = (a,b,t) => [a[0]+(b[0]-a[0])*t, a[1]+(b[1]-a[1])*t, a[2]+(b[2]-a[2])*t];
   switch(scheme) {
     case 'heat':
-      if(t < 0.33) return lerpColor([20,0,50],[200,0,100],t/0.33);
-      if(t < 0.66) return lerpColor([200,0,100],[255,180,0],(t-0.33)/0.33);
-      return lerpColor([255,180,0],[255,255,255],(t-0.66)/0.34);
+      if(t<0.33) return L([20,0,50],[200,0,100],t/0.33);
+      if(t<0.66) return L([200,0,100],[255,180,0],(t-0.33)/0.33);
+      return L([255,180,0],[255,255,255],(t-0.66)/0.34);
     case 'plasma':
-      if(t < 0.25) return lerpColor([13,8,135],[126,3,168],t/0.25);
-      if(t < 0.5)  return lerpColor([126,3,168],[204,71,120],(t-0.25)/0.25);
-      if(t < 0.75) return lerpColor([204,71,120],[248,149,64],(t-0.5)/0.25);
-      return lerpColor([248,149,64],[240,249,33],(t-0.75)/0.25);
+      if(t<0.25) return L([13,8,135],[126,3,168],t/0.25);
+      if(t<0.5)  return L([126,3,168],[204,71,120],(t-0.25)/0.25);
+      if(t<0.75) return L([204,71,120],[248,149,64],(t-0.5)/0.25);
+      return L([248,149,64],[240,249,33],(t-0.75)/0.25);
     case 'viridis':
-      if(t < 0.25) return lerpColor([68,1,84],[59,82,139],t/0.25);
-      if(t < 0.5)  return lerpColor([59,82,139],[33,145,140],(t-0.25)/0.25);
-      if(t < 0.75) return lerpColor([33,145,140],[94,201,98],(t-0.5)/0.25);
-      return lerpColor([94,201,98],[253,231,37],(t-0.75)/0.25);
+      if(t<0.25) return L([68,1,84],[59,82,139],t/0.25);
+      if(t<0.5)  return L([59,82,139],[33,145,140],(t-0.25)/0.25);
+      if(t<0.75) return L([33,145,140],[94,201,98],(t-0.5)/0.25);
+      return L([94,201,98],[253,231,37],(t-0.75)/0.25);
     case 'neon':
-      if(t < 0.5) return lerpColor([0,255,200],[200,0,255],t/0.5);
-      return lerpColor([200,0,255],[255,200,0],(t-0.5)/0.5);
+      if(t<0.5) return L([0,255,200],[200,0,255],t/0.5);
+      return L([200,0,255],[255,200,0],(t-0.5)/0.5);
+    case 'amber':
+      if(t<0.4) return L([30,10,0],[200,80,0],t/0.4);
+      if(t<0.8) return L([200,80,0],[255,200,50],(t-0.4)/0.4);
+      return L([255,200,50],[255,255,220],(t-0.8)/0.2);
+    case 'emerald':
+      if(t<0.33) return L([0,20,10],[0,120,60],t/0.33);
+      if(t<0.66) return L([0,120,60],[100,220,140],(t-0.33)/0.33);
+      return L([100,220,140],[220,255,240],(t-0.66)/0.34);
     default: // blue_white
-      if(t < 0.5) return lerpColor([20,40,100],[60,130,220],t/0.5);
-      return lerpColor([60,130,220],[200,230,255],(t-0.5)/0.5);
+      if(t<0.5) return L([20,40,100],[60,130,220],t/0.5);
+      return L([60,130,220],[200,230,255],(t-0.5)/0.5);
   }
 }
 
-function lerpColor(a, b, t) {
-  return [
-    a[0]+(b[0]-a[0])*t,
-    a[1]+(b[1]-a[1])*t,
-    a[2]+(b[2]-a[2])*t
-  ];
-}
+// ═══════════════════════════════════════════════════════
+//  TRAJECTORY COMPUTATION
+// ═══════════════════════════════════════════════════════
+function computeTrajectory(key, params) {
+  const def = ATTRACTORS[key];
+  if(def.isBio) return def.generate(params);
 
-// ─────────────────────────────────────────────
-//  COMPUTE TRAJECTORY
-// ─────────────────────────────────────────────
-function computeTrajectory(attractorKey, params) {
-  const def = ATTRACTORS[attractorKey];
   let p = def.init();
   const positions = [];
-  const N = def.steps;
-  const dt = def.dt;
-  const scale = def.scale;
-
+  const N = def.steps, dt = def.dt, scale = def.scale;
   for(let i = 0; i < N; i++) {
     const d = def.step(p, params);
-    p = [
-      p[0] + d[0] * dt,
-      p[1] + d[1] * dt,
-      p[2] + d[2] * dt
-    ];
-    if(i > 1000) { // skip transient
-      positions.push(p[0]*scale, p[2]*scale, p[1]*scale);
-    }
+    p = [p[0]+d[0]*dt, p[1]+d[1]*dt, p[2]+d[2]*dt];
+    if(i > 1000) positions.push(p[0]*scale, p[2]*scale, p[1]*scale);
   }
   return new Float32Array(positions);
 }
 
-// ─────────────────────────────────────────────
-//  DENSITY COLORING
-// ─────────────────────────────────────────────
-function computeDensityColors(positions, colorscheme) {
-  const N = positions.length / 3;
-  const colors = new Float32Array(N * 3);
-  const density = new Float32Array(N);
-  const K = 50;
-
-  for(let i = 0; i < N; i++) {
-    let d = 0;
-    for(let j = Math.max(0,i-K); j < Math.min(N,i+K); j++) {
-      const dx = positions[i*3]   - positions[j*3];
-      const dy = positions[i*3+1] - positions[j*3+1];
-      const dz = positions[i*3+2] - positions[j*3+2];
-      d += 1 / (1 + dx*dx + dy*dy + dz*dz);
-    }
-    density[i] = d;
-  }
-
-  let minD = Infinity, maxD = -Infinity;
-  for(let i = 0; i < N; i++) {
-    minD = Math.min(minD, density[i]);
-    maxD = Math.max(maxD, density[i]);
-  }
-
-  for(let i = 0; i < N; i++) {
-    const t = (density[i] - minD) / (maxD - minD);
-    const c = getColor(t, colorscheme);
-    colors[i*3]   = c[0] / 255;
-    colors[i*3+1] = c[1] / 255;
-    colors[i*3+2] = c[2] / 255;
-  }
-  return colors;
-}
-
-function computeVelocityColors(positions, colorscheme) {
-  const N = positions.length / 3;
-  const colors = new Float32Array(N * 3);
-
+// ═══════════════════════════════════════════════════════
+//  COLOR MODES
+// ═══════════════════════════════════════════════════════
+function computeVelocityColors(positions, scheme) {
+  const N = positions.length/3;
+  const colors = new Float32Array(N*3);
   for(let i = 0; i < N; i++) {
     const j = Math.min(i+1, N-1);
-    const dx = positions[j*3]   - positions[i*3];
-    const dy = positions[j*3+1] - positions[i*3+1];
-    const dz = positions[j*3+2] - positions[i*3+2];
+    const dx=positions[j*3]-positions[i*3], dy=positions[j*3+1]-positions[i*3+1], dz=positions[j*3+2]-positions[i*3+2];
     const speed = Math.sqrt(dx*dx+dy*dy+dz*dz);
-    const c = getColor(Math.min(speed*200,1), colorscheme);
-    colors[i*3]   = c[0]/255;
-    colors[i*3+1] = c[1]/255;
-    colors[i*3+2] = c[2]/255;
+    const c = getColor(Math.min(speed*200,1), scheme);
+    colors[i*3]=c[0]/255; colors[i*3+1]=c[1]/255; colors[i*3+2]=c[2]/255;
   }
   return colors;
 }
 
-// ─────────────────────────────────────────────
+function computeDepthColors(positions, scheme) {
+  // Color by Z depth — great for bio forms
+  const N = positions.length/3;
+  const colors = new Float32Array(N*3);
+  let minZ=Infinity, maxZ=-Infinity;
+  for(let i=0;i<N;i++) { minZ=Math.min(minZ,positions[i*3+1]); maxZ=Math.max(maxZ,positions[i*3+1]); }
+  const range = maxZ-minZ || 1;
+  for(let i=0;i<N;i++) {
+    const t = (positions[i*3+1]-minZ)/range;
+    const c = getColor(t, scheme);
+    colors[i*3]=c[0]/255; colors[i*3+1]=c[1]/255; colors[i*3+2]=c[2]/255;
+  }
+  return colors;
+}
+
+function computeDensityColors(positions, scheme) {
+  const N = positions.length/3;
+  const colors = new Float32Array(N*3);
+  const density = new Float32Array(N);
+  const K = 50;
+  for(let i=0;i<N;i++){
+    let d=0;
+    for(let j=Math.max(0,i-K);j<Math.min(N,i+K);j++){
+      const dx=positions[i*3]-positions[j*3], dy=positions[i*3+1]-positions[j*3+1], dz=positions[i*3+2]-positions[j*3+2];
+      d+=1/(1+dx*dx+dy*dy+dz*dz);
+    }
+    density[i]=d;
+  }
+  let minD=Infinity, maxD=-Infinity;
+  for(let i=0;i<N;i++){minD=Math.min(minD,density[i]);maxD=Math.max(maxD,density[i]);}
+  for(let i=0;i<N;i++){
+    const t=(density[i]-minD)/(maxD-minD);
+    const c=getColor(t,scheme);
+    colors[i*3]=c[0]/255;colors[i*3+1]=c[1]/255;colors[i*3+2]=c[2]/255;
+  }
+  return colors;
+}
+
+// ═══════════════════════════════════════════════════════
 //  THREE.JS SETUP
-// ─────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════
 const canvas = document.getElementById('canvas');
 const wrap = document.getElementById('canvas-wrap');
 
-const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false });
+const renderer = new THREE.WebGLRenderer({ canvas, antialias:true, preserveDrawingBuffer:true });
 renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setClearColor(0x0a0a0f, 1);
 
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(60, 1, 0.01, 1000);
-camera.position.set(0, 0, 12);
+camera.position.set(0,0,12);
 
-// Orbit controls (manual)
-let isDragging = false, lastMouse = {x:0,y:0};
-let spherical = { theta: 0, phi: Math.PI/2, r: 12 };
+// Orbit
+let isDragging=false, lastMouse={x:0,y:0};
+let spherical={theta:0, phi:Math.PI/2, r:12};
 
-canvas.addEventListener('mousedown', e => { isDragging = true; lastMouse = {x:e.clientX,y:e.clientY}; });
-canvas.addEventListener('mouseup', () => isDragging = false);
-canvas.addEventListener('mousemove', e => {
-  if(!isDragging) return;
-  const dx = e.clientX - lastMouse.x;
-  const dy = e.clientY - lastMouse.y;
-  spherical.theta -= dx * 0.005;
-  spherical.phi = Math.max(0.1, Math.min(Math.PI-0.1, spherical.phi + dy*0.005));
-  lastMouse = {x:e.clientX,y:e.clientY};
-  autoRotate = false;
+canvas.addEventListener('mousedown', e=>{isDragging=true;lastMouse={x:e.clientX,y:e.clientY};});
+canvas.addEventListener('mouseup', ()=>isDragging=false);
+canvas.addEventListener('mouseleave', ()=>isDragging=false);
+canvas.addEventListener('mousemove', e=>{
+  if(!isDragging)return;
+  spherical.theta -= (e.clientX-lastMouse.x)*0.005;
+  spherical.phi = Math.max(0.1,Math.min(Math.PI-0.1,spherical.phi+(e.clientY-lastMouse.y)*0.005));
+  lastMouse={x:e.clientX,y:e.clientY};
+  autoRotate=false;
 });
-canvas.addEventListener('wheel', e => {
-  spherical.r = Math.max(3, Math.min(50, spherical.r + e.deltaY * 0.02));
-}, {passive:true});
+canvas.addEventListener('wheel', e=>{spherical.r=Math.max(2,Math.min(50,spherical.r+e.deltaY*0.02));},{passive:true});
 
-// Touch
-let lastTouch = null;
-canvas.addEventListener('touchstart', e => { lastTouch = e.touches[0]; });
-canvas.addEventListener('touchmove', e => {
-  if(!lastTouch) return;
-  const t = e.touches[0];
-  const dx = t.clientX - lastTouch.clientX;
-  const dy = t.clientY - lastTouch.clientY;
-  spherical.theta -= dx * 0.005;
-  spherical.phi = Math.max(0.1, Math.min(Math.PI-0.1, spherical.phi + dy*0.005));
-  lastTouch = t;
-  autoRotate = false;
-}, {passive:true});
+let lastTouch=null;
+canvas.addEventListener('touchstart',e=>{lastTouch=e.touches[0];},{passive:true});
+canvas.addEventListener('touchmove',e=>{
+  if(!lastTouch)return;
+  const t=e.touches[0];
+  spherical.theta-=(t.clientX-lastTouch.clientX)*0.005;
+  spherical.phi=Math.max(0.1,Math.min(Math.PI-0.1,spherical.phi+(t.clientY-lastTouch.clientY)*0.005));
+  lastTouch=t; autoRotate=false;
+},{passive:true});
 
-function updateCamera() {
-  camera.position.x = spherical.r * Math.sin(spherical.phi) * Math.sin(spherical.theta);
-  camera.position.y = spherical.r * Math.cos(spherical.phi);
-  camera.position.z = spherical.r * Math.sin(spherical.phi) * Math.cos(spherical.theta);
+function updateCamera(){
+  camera.position.x=spherical.r*Math.sin(spherical.phi)*Math.sin(spherical.theta);
+  camera.position.y=spherical.r*Math.cos(spherical.phi);
+  camera.position.z=spherical.r*Math.sin(spherical.phi)*Math.cos(spherical.theta);
   camera.lookAt(0,0,0);
 }
 
-// ─────────────────────────────────────────────
-//  POINT CLOUD
-// ─────────────────────────────────────────────
-let pointsMesh = null;
-let animIndex = 0;
-let isAnimating = false;
-let autoRotate = true;
+// ═══════════════════════════════════════════════════════
+//  POINT CLOUD + TRAIL
+// ═══════════════════════════════════════════════════════
+let pointsMesh=null, trailMesh=null;
+let animIndex=0, isAnimating=false, autoRotate=true;
+let ptSize=0.015;
 
 function buildPointCloud(positions, colors) {
-  if(pointsMesh) {
-    scene.remove(pointsMesh);
-    pointsMesh.geometry.dispose();
-    pointsMesh.material.dispose();
-  }
-
-  const geo = new THREE.BufferGeometry();
-  geo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-  geo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
-
-  const mat = new THREE.PointsMaterial({
-    size: 0.015,
-    vertexColors: true,
-    transparent: true,
-    opacity: 0.85,
-    sizeAttenuation: true,
-  });
-
-  pointsMesh = new THREE.Points(geo, mat);
+  if(pointsMesh){ scene.remove(pointsMesh); pointsMesh.geometry.dispose(); pointsMesh.material.dispose(); }
+  const geo=new THREE.BufferGeometry();
+  geo.setAttribute('position',new THREE.BufferAttribute(positions,3));
+  geo.setAttribute('color',new THREE.BufferAttribute(colors,3));
+  const mat=new THREE.PointsMaterial({size:ptSize,vertexColors:true,transparent:true,opacity:0.88,sizeAttenuation:true});
+  pointsMesh=new THREE.Points(geo,mat);
   scene.add(pointsMesh);
-  animIndex = 0;
-  document.getElementById('stat-points').textContent = (positions.length/3).toLocaleString();
+  animIndex=0;
+  document.getElementById('stat-points').textContent=(positions.length/3).toLocaleString();
 }
 
-// ─────────────────────────────────────────────
-//  STATE & PARAMS
-// ─────────────────────────────────────────────
-let currentAttractor = 'lorenz';
-let currentParams = {};
-let savedParams = {};
-let useDensity = false;
-let colorscheme = 'blue_white';
-let allPositions = null;
+function buildTrail(positions) {
+  if(trailMesh){ scene.remove(trailMesh); trailMesh.geometry.dispose(); trailMesh.material.dispose(); }
+  if(!document.getElementById('trail-toggle').checked) return;
+  // Take every 5th point as a line strip
+  const stride=5;
+  const N=Math.floor(positions.length/(3*stride));
+  const trailPts=new Float32Array(N*3);
+  for(let i=0;i<N;i++){ trailPts[i*3]=positions[i*stride*3]; trailPts[i*3+1]=positions[i*stride*3+1]; trailPts[i*3+2]=positions[i*stride*3+2]; }
+  const geo=new THREE.BufferGeometry();
+  geo.setAttribute('position',new THREE.BufferAttribute(trailPts,3));
+  const mat=new THREE.LineBasicMaterial({color:0x3355aa,transparent:true,opacity:0.25});
+  trailMesh=new THREE.Line(geo,mat);
+  scene.add(trailMesh);
+}
 
-function getDefaultParams(key) {
-  const def = ATTRACTORS[key];
-  const p = {};
-  for(const [k,v] of Object.entries(def.params)) p[k] = v.default;
+// ═══════════════════════════════════════════════════════
+//  STATE
+// ═══════════════════════════════════════════════════════
+let currentAttractor='lorenz', currentParams={}, savedParams={};
+let useDensity=false, colorscheme='blue_white', allPositions=null;
+
+function getDefaultParams(key){
+  const p={};
+  for(const[k,v]of Object.entries(ATTRACTORS[key].params)) p[k]=v.default;
   return p;
 }
 
-function rebuildViz() {
-  const def = ATTRACTORS[currentAttractor];
-  allPositions = computeTrajectory(currentAttractor, currentParams);
-
+function rebuildViz(){
+  const def=ATTRACTORS[currentAttractor];
+  allPositions=computeTrajectory(currentAttractor,currentParams);
   let colors;
-  if(useDensity) {
-    colors = computeDensityColors(allPositions, colorscheme);
-  } else {
-    colors = computeVelocityColors(allPositions, colorscheme);
-  }
-
-  buildPointCloud(allPositions, colors);
-  document.getElementById('stat-name').textContent = def.name;
-  isAnimating = document.getElementById('animate-toggle').checked;
+  if(useDensity) colors=computeDensityColors(allPositions,colorscheme);
+  else if(def.isBio) colors=computeDepthColors(allPositions,colorscheme);
+  else colors=computeVelocityColors(allPositions,colorscheme);
+  buildPointCloud(allPositions,colors);
+  buildTrail(allPositions);
+  document.getElementById('stat-name').textContent=def.name;
+  // Type pill
+  const pill=document.getElementById('type-pill');
+  if(def.isBio){ pill.textContent='BIOLOGICAL FORM'; pill.className='bio'; }
+  else { pill.textContent='CHAOTIC SYSTEM'; pill.className='chaos'; }
+  isAnimating=document.getElementById('animate-toggle').checked;
 }
 
-// ─────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════
 //  PARAM UI
-// ─────────────────────────────────────────────
-function buildParamUI() {
-  const def = ATTRACTORS[currentAttractor];
-  currentParams = Object.assign({}, savedParams[currentAttractor] || getDefaultParams(currentAttractor));
-
-  const container = document.getElementById('params');
-  container.innerHTML = '';
-
-  for(const [key, cfg] of Object.entries(def.params)) {
-    const item = document.createElement('div');
-    item.className = 'param-item';
-    item.innerHTML = `
+// ═══════════════════════════════════════════════════════
+function buildParamUI(){
+  const def=ATTRACTORS[currentAttractor];
+  currentParams=Object.assign({},savedParams[currentAttractor]||getDefaultParams(currentAttractor));
+  const container=document.getElementById('params');
+  container.innerHTML='';
+  for(const[key,cfg]of Object.entries(def.params)){
+    const label=cfg.label||key;
+    const item=document.createElement('div');
+    item.className='param-item';
+    item.innerHTML=`
       <div class="param-header">
-        <span class="param-name">${key}</span>
-        <span class="param-value" id="val-${key}">${currentParams[key].toFixed(2)}</span>
+        <span class="param-name">${label}</span>
+        <span class="param-value" id="val-${key}">${Number(currentParams[key]).toFixed(2)}</span>
       </div>
-      <input type="range"
-        id="slider-${key}"
-        min="${cfg.min}" max="${cfg.max}" step="${cfg.step}"
-        value="${currentParams[key]}"/>
-    `;
+      <input type="range" id="slider-${key}" min="${cfg.min}" max="${cfg.max}" step="${cfg.step}" value="${currentParams[key]}"/>`;
     container.appendChild(item);
-
-    item.querySelector(`#slider-${key}`).addEventListener('input', e => {
-      const v = parseFloat(e.target.value);
-      currentParams[key] = v;
-      document.getElementById(`val-${key}`).textContent = v.toFixed(2);
+    item.querySelector(`#slider-${key}`).addEventListener('input',e=>{
+      const v=parseFloat(e.target.value);
+      currentParams[key]=v;
+      document.getElementById(`val-${key}`).textContent=Number(v).toFixed(2);
       rebuildViz();
     });
   }
 }
 
-// ─────────────────────────────────────────────
-//  LEARN MODE
-// ─────────────────────────────────────────────
-function updateLearnPanel() {
-  const def = ATTRACTORS[currentAttractor];
-  document.getElementById('learn-title').textContent = def.name + ' Attractor';
-  document.getElementById('learn-desc').textContent = def.learn.desc;
-  document.getElementById('learn-eq').textContent = def.learn.eq;
+function updateLearnPanel(){
+  const def=ATTRACTORS[currentAttractor];
+  document.getElementById('learn-title').textContent=def.name+(def.isBio?' Form':' Attractor');
+  document.getElementById('learn-desc').textContent=def.learn.desc;
+  document.getElementById('learn-eq').textContent=def.learn.eq;
+  const factEl=document.getElementById('learn-fact');
+  if(def.learn.fact){ factEl.textContent='💡 '+def.learn.fact; factEl.style.display='block'; }
+  else factEl.style.display='none';
 }
 
-// ─────────────────────────────────────────────
-//  EVENT WIRING
-// ─────────────────────────────────────────────
-document.getElementById('attractor-select').addEventListener('change', e => {
-  currentAttractor = e.target.value;
-  buildParamUI();
-  updateLearnPanel();
-  rebuildViz();
+// ═══════════════════════════════════════════════════════
+//  EVENTS
+// ═══════════════════════════════════════════════════════
+document.getElementById('attractor-select').addEventListener('change',e=>{
+  currentAttractor=e.target.value; buildParamUI(); updateLearnPanel(); rebuildViz();
 });
-
-document.getElementById('learn-toggle').addEventListener('change', e => {
-  document.getElementById('learn-panel').classList.toggle('active', e.target.checked);
+document.getElementById('learn-toggle').addEventListener('change',e=>{
+  document.getElementById('learn-panel').classList.toggle('active',e.target.checked);
 });
-
-document.getElementById('density-toggle').addEventListener('change', e => {
-  useDensity = e.target.checked;
-  rebuildViz();
+document.getElementById('density-toggle').addEventListener('change',e=>{useDensity=e.target.checked;rebuildViz();});
+document.getElementById('colorscale-select').addEventListener('change',e=>{colorscheme=e.target.value;rebuildViz();});
+document.getElementById('animate-toggle').addEventListener('change',e=>{isAnimating=e.target.checked;if(isAnimating)animIndex=0;});
+document.getElementById('rotate-toggle').addEventListener('change',e=>{autoRotate=e.target.checked;});
+document.getElementById('trail-toggle').addEventListener('change',()=>buildTrail(allPositions));
+document.getElementById('reset-btn').addEventListener('click',()=>{delete savedParams[currentAttractor];buildParamUI();rebuildViz();});
+document.getElementById('save-btn').addEventListener('click',()=>{
+  savedParams[currentAttractor]=Object.assign({},currentParams);
+  const btn=document.getElementById('save-btn');
+  btn.textContent='Saved ✓'; setTimeout(()=>btn.textContent='Save values',1500);
 });
-
-document.getElementById('colorscale-select').addEventListener('change', e => {
-  colorscheme = e.target.value;
-  rebuildViz();
-});
-
-document.getElementById('animate-toggle').addEventListener('change', e => {
-  isAnimating = e.target.checked;
-  if(isAnimating) animIndex = 0;
-});
-
-document.getElementById('rotate-toggle').addEventListener('change', e => {
-  autoRotate = e.target.checked;
-});
-
-document.getElementById('reset-btn').addEventListener('click', () => {
-  delete savedParams[currentAttractor];
-  buildParamUI();
-  rebuildViz();
-});
-
-document.getElementById('save-btn').addEventListener('click', () => {
-  savedParams[currentAttractor] = Object.assign({}, currentParams);
-  const btn = document.getElementById('save-btn');
-  const orig = btn.textContent;
-  btn.textContent = 'Saved ✓';
-  setTimeout(() => btn.textContent = orig, 1500);
+document.getElementById('pt-size-slider').addEventListener('input',e=>{
+  ptSize=parseFloat(e.target.value);
+  document.getElementById('pt-size-val').textContent=ptSize.toFixed(3);
+  if(pointsMesh) pointsMesh.material.size=ptSize;
 });
 
 // Collapse
-const sidebar = document.getElementById('sidebar');
-const colBtn = document.getElementById('collapse-btn');
-let collapsed = false;
-colBtn.addEventListener('click', () => {
-  collapsed = !collapsed;
-  sidebar.classList.toggle('collapsed', collapsed);
-  colBtn.textContent = collapsed ? '▶' : '◀';
+const sidebar=document.getElementById('sidebar');
+const colBtn=document.getElementById('collapse-btn');
+let collapsed=false;
+colBtn.addEventListener('click',()=>{
+  collapsed=!collapsed;
+  sidebar.classList.toggle('collapsed',collapsed);
+  colBtn.textContent=collapsed?'▶':'◀';
   onResize();
 });
 
 // Screenshot
-document.getElementById('screenshot-btn').addEventListener('click', () => {
-  renderer.render(scene, camera);
-  const url = canvas.toDataURL('image/png');
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = `attractor-${currentAttractor}.png`;
+document.getElementById('screenshot-btn').addEventListener('click',()=>{
+  renderer.render(scene,camera);
+  const a=document.createElement('a');
+  a.href=canvas.toDataURL('image/png');
+  a.download=`attractor-${currentAttractor}.png`;
   a.click();
 });
 
-// ─────────────────────────────────────────────
-//  RESIZE
-// ─────────────────────────────────────────────
-function onResize() {
-  const w = wrap.clientWidth;
-  const h = wrap.clientHeight;
-  renderer.setSize(w, h);
-  camera.aspect = w / h;
-  camera.updateProjectionMatrix();
+// ═══════════════════════════════════════════════════════
+//  RESIZE + LOOP
+// ═══════════════════════════════════════════════════════
+function onResize(){
+  const w=wrap.clientWidth,h=wrap.clientHeight;
+  renderer.setSize(w,h); camera.aspect=w/h; camera.updateProjectionMatrix();
 }
-window.addEventListener('resize', onResize);
+window.addEventListener('resize',onResize);
 
-// ─────────────────────────────────────────────
-//  ANIMATION LOOP
-// ─────────────────────────────────────────────
-let frameCount = 0;
-function animate() {
+let fpsFrames=0, fpsLast=performance.now();
+function animate(){
   requestAnimationFrame(animate);
-  frameCount++;
-
-  if(autoRotate) {
-    spherical.theta += 0.003;
+  fpsFrames++;
+  const now=performance.now();
+  if(now-fpsLast>1000){
+    document.getElementById('stat-fps').textContent=fpsFrames;
+    fpsFrames=0; fpsLast=now;
   }
+  if(autoRotate) spherical.theta+=0.003;
   updateCamera();
 
-  // Trajectory animation
-  if(isAnimating && pointsMesh && allPositions) {
-    const step = 500;
-    animIndex = Math.min(animIndex + step, allPositions.length/3);
-    const visible = allPositions.slice(0, animIndex*3);
-    const colors = computeVelocityColors(visible, colorscheme);
-    pointsMesh.geometry.setAttribute('position', new THREE.BufferAttribute(visible, 3));
-    pointsMesh.geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
-    pointsMesh.geometry.setDrawRange(0, animIndex);
-    if(animIndex >= allPositions.length/3) { isAnimating = false; }
+  if(isAnimating && pointsMesh && allPositions){
+    const step=500;
+    animIndex=Math.min(animIndex+step,allPositions.length/3);
+    const visible=allPositions.slice(0,animIndex*3);
+    const colors=computeVelocityColors(visible,colorscheme);
+    pointsMesh.geometry.setAttribute('position',new THREE.BufferAttribute(visible,3));
+    pointsMesh.geometry.setAttribute('color',new THREE.BufferAttribute(colors,3));
+    pointsMesh.geometry.setDrawRange(0,animIndex);
+    if(animIndex>=allPositions.length/3) isAnimating=false;
   }
-
-  renderer.render(scene, camera);
+  renderer.render(scene,camera);
 }
 
-// ─────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════
 //  INIT
-// ─────────────────────────────────────────────
-currentAttractor = 'lorenz';
+// ═══════════════════════════════════════════════════════
 buildParamUI();
 updateLearnPanel();
 onResize();
